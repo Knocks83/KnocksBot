@@ -2,6 +2,11 @@
 
 include 'config.php';
 
+if ($enableMySQL) {
+    include 'MySQL.php';
+    $mysql = new MySQL($mysql_host, $mysql_username, $mysql_password, $mysql_db);
+}
+
 class EventHandler extends \danog\MadelineProto\EventHandler
 {
     public function __construct($MadelineProto)
