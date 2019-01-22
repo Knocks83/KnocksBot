@@ -23,7 +23,7 @@ if (isset($text) && isset($chat_id)) {
 
     if ($text == '/start') {
         if (!$bot) {
-            $MadelineProto->messages->sendMessage(['peer' => $chat_id,'reply_markup' => 'Markdown', 'message' => 'Hi! I\'m a userbot made with [KnocksBot!](https://github.com/Knocks83/KnocksBot.git)']);
+            $MadelineProto->messages->sendMessage(['peer' => $chat_id,'parse_mode' => 'Markdown', 'message' => 'Hi! I\'m a userbot made with [KnocksBot!](https://github.com/Knocks83/KnocksBot.git)']);
         } else {
             sendMessage($chat_id, 'Hi! I\'m a bot made with [KnocksBot!](https://github.com/Knocks83/KnocksBot.git)');
         }
