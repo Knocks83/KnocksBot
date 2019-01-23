@@ -13,18 +13,16 @@ function shutdown($lock)
     fclose($lock);
 }
 
-$MadelineProto = new \danog\MadelineProto\API('session.madeline', ['logger' => ['logger_level' => 5]]);
-
 $lock = lockFile();
 
 register_shutdown_function('shutdown', $lock);
 
-$running = true;
-$offset = 0;
+$MadelineProto = new \danog\MadelineProto\API('session.madeline', ['logger' => ['logger_level' => 5]]);
+
 $started = time();
 
 $bot = $MadelineProto->get_self()['bot'];
 
+$MadelineProto->start();
 $MadelineProto->setEventHandler('\EventHandler');
 $MadelineProto->loop();
-$MadelineProto->start();

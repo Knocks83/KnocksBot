@@ -2,11 +2,6 @@
 
 include 'config.php';
 
-if ($enableMySQL) {
-    include 'MySQL.php';
-    $mysql = new MySQL($mysql_host, $mysql_username, $mysql_password, $mysql_db);
-}
-
 class EventHandler extends \danog\MadelineProto\EventHandler
 {
     public function __construct($MadelineProto)
@@ -27,9 +22,17 @@ class EventHandler extends \danog\MadelineProto\EventHandler
     public function onUpdateNewChannelMessage($update)
     {
         // Watch out, channel is also groups!
+        global $read_outgoing_messages;
+        global $bot;
         $isPrivateChat = false;
-        $user_id = $update['message']['from_id'];
+
         $chat_id = $update['message']['to_id']['channel_id'];
+        if (isset($update['message']['from_id'])) {
+            $user_id = $update['message']['from_id'];
+        } else {
+            $user_id = $chat_id;
+        }
+        
         $msg_id = $update['message']['id'];
         if (isset($update['message']['message'])) {
             $text = $update['message']['message'];
@@ -57,7 +60,10 @@ class EventHandler extends \danog\MadelineProto\EventHandler
         $user_id = $update['message']['from_id'];
         $chat_id = $user_id;
         $msg_id = $update['message']['id'];
-        $text = $update['message']['message'];
+        
+        if (isset($update['message']['message'])) {
+            $text = $update['message']['message'];
+        }
 
         try {
             include 'commands.php';
